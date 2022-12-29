@@ -12,11 +12,13 @@
  * Text Domain: gallery-view
  */
 
+global $gv_submenu_page;
+
 // Add the menu item and scripts actions.
 add_action( 'admin_menu', 'gv_admin_menu' );
 add_action( 'admin_enqueue_scripts', 'gv_admin_enqueue_scripts' );
 
-global $gv_submenu_page;
+add_filter( 'set-screen-option', 'gv_post_gallery_set_screen_option', 10, 3 );
 
 // Add the menu subpage for the gallery.
 function gv_admin_menu() {
