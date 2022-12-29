@@ -14,6 +14,9 @@ class Gallery_View
 {
 	private $submenu_page;
 	private $user;
+	private $view_types = array( 'published' => 'publish', 'scheduled' => 'future', 'drafts' => 'draft' );
+	private $tags;
+	private $categories;
 
 	// Main constructor.
     public function __construct() {
@@ -91,10 +94,10 @@ class Gallery_View
 		if( $items_per_page < 1 ) { $items_per_page = 10; }
 
 		// Get the available categories.
-		$categories = get_categories();
+		$this->categories = get_categories();
 
 		// Get the available tags.
-		$tags = get_tags( array( 'orderby' => 'name' ) );
+		$this->tags = get_tags( array( 'orderby' => 'name' ) );
 
 		// Setup an array with the view types and translations.
 		$views = array( 'all' => __( 'All', 'gallery-view' ), 'publish' => __( 'Published', 'gallery-view' ), 'future' => __( 'Scheduled', 'gallery-view' ), 'draft' => __( 'Drafts', 'gallery-view' ) );
@@ -222,7 +225,7 @@ class Gallery_View
 
 		echo '<option value="0"' . $selected . '>' . __( 'All Categories', 'gallery-view' ) . '</option>' . PHP_EOL;
 
-		foreach( $categories as $category ) {
+		foreach( $this->categories as $category ) {
 			if( $category->count > 0 ) {
 				if ( $selected_cat_id === $category->term_id ) { $selected = ' selected="selected"'; } else { $selected = ''; }
 				echo "\t\t" . '<option value="' . esc_attr( $category->term_id ) . '"' . $selected . '>' . esc_html( $category->name ) . '</option>' . PHP_EOL;
@@ -239,7 +242,7 @@ class Gallery_View
 
 		echo '<option value=""' . $selected . '>' . __( 'All Tags', 'gallery-view' ) . '</option>' . PHP_EOL;
 
-		foreach( $tags as $tag ) {
+		foreach( $this->tags as $tag ) {
 			if( $tag->count > 0 ) {
 				if ( $selected_tag_id === $tag->slug ) { $selected = ' selected="selected"'; } else { $selected = ''; }
 				echo "\t\t" . '<option value="' . esc_attr( $tag->slug ) . '"' . $selected . '>' . esc_html( $tag->name ) . '</option>' . PHP_EOL;
@@ -375,16 +378,11 @@ class Gallery_View
 
 	// This function gets all the query parameters that have been set for this page load.
 	private function get_page_parameters() {
-		// Get some values we're going t need later.
-		$view_types = array( 'published' => 'publish', 'scheduled' => 'future', 'drafts' => 'draft' );
-		$tags = get_tags( array( 'orderby' => 'name' ) );
-		$categories = get_categories();
-
 		$current_view = '';
 
 		// Get the currently selected view if there is one.
 		if( array_key_exists( 'post_status', $_REQUEST ) && $_REQUEST['post_status'] !== '' && $_REQUEST['post_status'] != '' ) {
-			if( in_array( $_REQUEST['post_status'], $view_types ) ) {
+			if( in_array( $_REQUEST['post_status'], $this->view_types ) ) {
 				$current_view = $_REQUEST['post_status'];
 			}
 		}
@@ -395,7 +393,7 @@ class Gallery_View
 		if( array_key_exists( 'cat', $_REQUEST ) && $_REQUEST['cat'] !== '' && $_REQUEST['cat'] != '' )
 			{
 			// Make sure its a valid tag.
-			foreach( $categories as $category )
+			foreach( $this->categories as $category )
 				{
 				if( $category->term_id == $_REQUEST['cat'] )
 					$selected_cat_id = $category->term_id;
@@ -408,7 +406,7 @@ class Gallery_View
 		if( array_key_exists( 'tag', $_REQUEST ) && $_REQUEST['tag'] !== '' && $_REQUEST['tag'] != '' )
 			{
 			// Make sure its a valid tag.
-			foreach( $tags as $tag )
+			foreach( $this->tags as $tag )
 				{
 				if( $tag->slug === $_REQUEST['tag'] )
 					$selected_tag_id = $tag->slug;
