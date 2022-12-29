@@ -16,14 +16,44 @@
 add_action( 'admin_menu', 'gv_admin_menu' );
 add_action( 'admin_enqueue_scripts', 'gv_admin_enqueue_scripts' );
 
+global $gv_submenu_page;
+
 // Add the menu subpage for the gallery.
 function gv_admin_menu() {
-	add_submenu_page( 'edit.php', __( 'Gallery', 'gallery-view' ), __( 'Gallery', 'gallery-view' ), 'edit_posts', 'post_gallery', 'gv_display_gallery_view_page', 10 );
+	global $gv_submenu_page;
+
+	$gv_submenu_page = add_submenu_page( 'edit.php', __( 'Gallery', 'gallery-view' ), __( 'Gallery', 'gallery-view' ), 'edit_posts', 'post_gallery', 'gv_display_gallery_view_page', 10 );
+
+	add_action( 'load-'. $gv_submenu_page, 'gv_post_gallery_screen_options' );
 }
 
 // Load the css.
 function gv_admin_enqueue_scripts() {
-    wp_enqueue_style( 'gv-admin-css', plugin_dir_url( __FILE__ ) . '/gallery-view.css' );
+    wp_enqueue_style( 'gv-admin-css', plugin_dir_url( __FILE__ ) . '/css/gallery-view.css' );
+}
+
+function gv_post_gallery_screen_options() {
+	global $gv_submenu_page;
+
+	$screen = get_current_screen();
+
+	// get out of here if we are not on our settings page
+	if( !is_object( $screen ) || $screen->id != $gv_submenu_page )
+		return;
+
+	$args = array(
+		'label' => __( 'Number of items per page', 'gallery-view' ) . ':',
+		'default' => 10,
+		'option' => 'gv_items_per_page'
+	);
+
+	add_screen_option( 'per_page', $args );
+}
+
+function gv_post_gallery_set_screen_option( $status, $option, $value ) {
+	if( 'gv_items_per_page' == $option ) {
+		return $value;
+	}
 }
 
 // Main page display function.
@@ -35,7 +65,10 @@ function gv_display_gallery_view_page() {
 	$image_sizes = wp_get_registered_image_subsizes();
 
 	// Get the posts per page the user has set on the main posts page.
-	$items_per_page = get_user_meta( $current_user->ID, 'edit_post_per_page', true );
+	$items_per_page = get_user_meta( $current_user->ID, 'gv_items_per_page', true );
+
+	// Make a sane default.
+	if( $items_per_page < 1 ) { $items_per_page = 10; }
 
 	// Get the available categories.
 	$categories = get_categories();
