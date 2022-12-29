@@ -13,7 +13,7 @@ View posts in a gallery layout in the admin.
 
 If your blog is primarily visually based?  Do you have featured images on all of your posts?  Is the default posts view less than intuitive for you?
 
-Perhaps Gallery View can help.
+Perhaps Gallery View might be able to help.
 
 Gallery view adds a new view of your posts in a grid layout like a photographic contact sheet, letting you see your posts in a whole new way.
 
