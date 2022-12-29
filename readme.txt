@@ -25,9 +25,13 @@ Gallery view adds a new view of your posts in a grid layout like a photographic 
 
 == Frequently Asked Questions ==
 
-= TBD =
+= Does this work for other post types?  Custom post types? =
 
-TBD
+Not at this time.
+
+= What happens if there isn't a featured image set for a post? =
+
+You'll get a checkerboard pattern displayed instead of the image.
 
 == Screenshots ==
 
