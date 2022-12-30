@@ -12,8 +12,8 @@
  * Text Domain: gallery-view
  */
 
-define( 'GV_VERSION', '1.0' );
-define( 'GV_PLUGIN_FILE', __FILE__ );
+define( 'GVP_VERSION', '1.0' );
+define( 'GVP_PLUGIN_FILE', __FILE__ );
 
 include_once( 'includes/class-gallery-view.php');
 

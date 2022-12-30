@@ -40,9 +40,9 @@ class Gallery_View
 
 	// Load the css/js.
 	public function admin_enqueue_scripts() {
-	    wp_enqueue_style( 'gv-admin-css', plugin_dir_url( GV_PLUGIN_FILE ) . 'css/gallery-view.css' );
+	    wp_enqueue_style( 'gv-admin-css', plugin_dir_url( GVP_PLUGIN_FILE ) . 'css/gallery-view.css' );
 
-	    wp_enqueue_script( 'gv-admin-js', plugin_dir_url( GV_PLUGIN_FILE ) . 'js/gallery-view.js', ['jquery'], GV_VERSION, false );
+	    wp_enqueue_script( 'gv-admin-js', plugin_dir_url( GVP_PLUGIN_FILE ) . 'js/gallery-view.js', ['jquery'], GVP_VERSION, false );
 	}
 
 	// Set the screen options for the page.
@@ -132,7 +132,7 @@ class Gallery_View
 		// Use WP_Query to get the posts we want.
 		$results = new WP_Query( $posts_query );
 
-		// Use a nicer varaible to hold the posts.
+		// Use a nicer variable to hold the posts.
 		$posts = $results->posts;
 
 		// Set the number of results were actually found as the post count, instead of just what was returned in the current paged resuts.
@@ -142,7 +142,7 @@ class Gallery_View
 		echo '<div class="wrap">' . PHP_EOL;
 
 		echo '<h1 class="wp-heading-inline">' . __( 'Gallery', 'gallery-view' ) . '</h1>' . PHP_EOL;
-		echo '<a href="http://localhost/wp-admin/post-new.php" class="page-title-action">' . __( 'Add New', 'gallery-view' ) . '</a>' . PHP_EOL;
+		echo '<a href="' . admin_url( 'post-new.php' ) . '" class="page-title-action">' . __( 'Add New', 'gallery-view' ) . '</a>' . PHP_EOL;
 
 		echo '<hr class="wp-header-end">' . PHP_EOL;
 
@@ -166,7 +166,7 @@ class Gallery_View
 			if( $current_view == '' && $name == 'all' ) { $view_selected = ' current'; }
 			if( $current_view == $name ) { $view_selected = ' current'; }
 
-			echo '<li class="' . esc_attr( $name ) . '"><a class="' . $view_selected . '" href="' . $this->build_admin_url( '', '', '', '', 1, $name ) . '">' . esc_html( $view ) . '<span class="count">(' . esc_html( $view_counts[$name] ). ')</span></a>' . $separator . '</li>' . PHP_EOL;
+			echo '<li class="' . esc_attr( $name ) . '"><a class="' . esc_html( $view_selected ) . '" href="' . $this->build_admin_url( '', '', '', '', 1, $name ) . '">' . esc_html( $view ) . '<span class="count">(' . esc_html( $view_counts[$name] ). ')</span></a>' . $separator . '</li>' . PHP_EOL;
 		}
 
 		echo '</ul>' . PHP_EOL;
@@ -303,7 +303,7 @@ class Gallery_View
 
 		// Now output the page selector.
 		echo '<div class="tablenav-pages">' . PHP_EOL;
-		echo '<span class="displaying-num">' . $post_count . ' items</span>' . PHP_EOL;
+		echo '<span class="displaying-num">' . esc_html( $post_count ) . ' items</span>' . PHP_EOL;
 		echo '<span class="pagination-links">' . PHP_EOL;
 		echo $first_page . PHP_EOL;
 		echo $prev_page . PHP_EOL;
