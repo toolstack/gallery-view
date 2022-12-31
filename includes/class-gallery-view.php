@@ -338,7 +338,7 @@ class Gallery_View
 			}
 
 			// Output the image/content.
-			echo '<a href="' . $edit_post_url . '"><div class="gv-checkered" style="font-size: 1.5em; line-height: ' . $image_sizes['thumbnail']['height'] / 2 . 'px; text-align: center; width: ' . $image_sizes['thumbnail']['width'] . 'px; height: ' . $image_sizes['thumbnail']['height'] . 'px;">' . $item_content . '</div></a>' . PHP_EOL;
+			echo '<a href="' . esc_attr( $edit_post_url ) . '"><div class="gv-checkered" style="font-size: 1.5em; line-height: ' . $image_sizes['thumbnail']['height'] / 2 . 'px; text-align: center; width: ' . $image_sizes['thumbnail']['width'] . 'px; height: ' . $image_sizes['thumbnail']['height'] . 'px;">' . $item_content . '</div></a>' . PHP_EOL;
 
 			// Make a pleasant looking date string.
 			$date_string = wp_date( get_option( 'date_format' ), strtotime( $post->post_date ) );
@@ -346,7 +346,7 @@ class Gallery_View
 
 			// Output the date and the post title.
 			if( $show_date || $show_title ) {
-				echo '<a href="' . $edit_post_url . '"><div class="gv-info-box">' . PHP_EOL;
+				echo '<a href="' . esc_attr( $edit_post_url ) . '"><div class="gv-info-box">' . PHP_EOL;
 				if( $show_date ) { echo '' . $date_string . ''; }
 				if( $show_title ) { echo '<p class="gv-gallery-title" style="width: ' . $image_sizes['thumbnail']['width'] - 10 . 'px;">' . esc_html( $post_title ) . '</p>'; }
 				echo '</div></a>' . PHP_EOL;
@@ -382,8 +382,8 @@ class Gallery_View
 
 		// Get the currently selected view if there is one.
 		if( array_key_exists( 'post_status', $_REQUEST ) && $_REQUEST['post_status'] !== '' && $_REQUEST['post_status'] != '' ) {
-			if( in_array( $_REQUEST['post_status'], $this->view_types ) ) {
-				$current_view = $_REQUEST['post_status'];
+			if( $find_view = array_search( $_REQUEST['post_status'], $this->view_types, true ) ) {
+				$current_view = $this->view_types[$find_view];
 			}
 		}
 
@@ -431,8 +431,8 @@ class Gallery_View
 
 		// Get the currently selected page if there is one.
 		if( array_key_exists( 'm', $_REQUEST ) && $_REQUEST['m'] !== '' && $_REQUEST['m'] != '' ) {
-			$year = substr( $_REQUEST['m'], 0, 4 );
-			$month = substr( $_REQUEST['m'], 4, 2 );
+			$year = (int) substr( $_REQUEST['m'], 0, 4 );
+			$month = (int) substr( $_REQUEST['m'], 4, 2 );
 			$selected_date = wp_date( 'Ym', strtotime( $year . '-' . $month . '-28') );
 		}
 
