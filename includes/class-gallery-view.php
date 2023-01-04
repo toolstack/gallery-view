@@ -210,9 +210,7 @@ class Gallery_View
 		echo '<option value="0">' . __( 'All dates', 'gallery-view' ) . '</option>' . PHP_EOL;
 
 		foreach( $dates as $name => $date ) {
-			if( $name == $selected_date ) { $selected = ' selected="selected"'; } else { $selected = ''; }
-
-			echo '<option value="' . esc_attr( $name ) . '"' . $selected . '>' . esc_html( $date ) . '</option>' . PHP_EOL;
+			echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $selected_date, false) . '>' . esc_html( $date ) . '</option>' . PHP_EOL;
 		}
 
 		echo '</select>' . PHP_EOL;
@@ -221,14 +219,11 @@ class Gallery_View
 		echo '<label class="screen-reader-text" for="cat">' . __( 'Filter by category', 'gallery-view' ) . '</label>' . PHP_EOL;
 		echo '<select name="cat" id="cat" class="postform">' . PHP_EOL;
 
-		if( $selected_cat_id === '0' ) { $selected = ' selected="selected"'; } else { $selected = ''; }
-
-		echo '<option value="0"' . $selected . '>' . __( 'All Categories', 'gallery-view' ) . '</option>' . PHP_EOL;
+		echo '<option value="0"' . selected( 0, $selected_cat_id, false ) . '>' . __( 'All Categories', 'gallery-view' ) . '</option>' . PHP_EOL;
 
 		foreach( $this->categories as $category ) {
 			if( $category->count > 0 ) {
-				if ( $selected_cat_id === $category->term_id ) { $selected = ' selected="selected"'; } else { $selected = ''; }
-				echo "\t\t" . '<option value="' . esc_attr( $category->term_id ) . '"' . $selected . '>' . esc_html( $category->name ) . '</option>' . PHP_EOL;
+				echo "\t\t" . '<option value="' . esc_attr( $category->term_id ) . '"' . selected( $selected_cat_id, $category->term_id, false ) . '>' . esc_html( $category->name ) . '</option>' . PHP_EOL;
 			}
 		}
 
@@ -238,14 +233,11 @@ class Gallery_View
 		echo '<label for="tag" class="screen-reader-text">' . __( 'Filter by tag', 'gallery-view' ) . '</label>' . PHP_EOL;
 		echo '<select name="tag" id="tag">' . PHP_EOL;
 
-		if( $selected_tag_id === '' ) { $selected = ' selected="selected"'; } else { $selected = ''; }
-
-		echo '<option value=""' . $selected . '>' . __( 'All Tags', 'gallery-view' ) . '</option>' . PHP_EOL;
+		echo '<option value=""' . selected( '', $selected_tag_id, false ) . '>' . __( 'All Tags', 'gallery-view' ) . '</option>' . PHP_EOL;
 
 		foreach( $this->tags as $tag ) {
 			if( $tag->count > 0 ) {
-				if ( $selected_tag_id === $tag->slug ) { $selected = ' selected="selected"'; } else { $selected = ''; }
-				echo "\t\t" . '<option value="' . esc_attr( $tag->slug ) . '"' . $selected . '>' . esc_html( $tag->name ) . '</option>' . PHP_EOL;
+				echo "\t\t" . '<option value="' . esc_attr( $tag->slug ) . '"' . selected( $selected_tag_id, $tag->slug, false ) . '>' . esc_html( $tag->name ) . '</option>' . PHP_EOL;
 			}
 		}
 
@@ -255,12 +247,8 @@ class Gallery_View
 		echo '<label for="order" class="screen-reader-text">' . __( 'Display order', 'gallery-view' ) . '</label>' . PHP_EOL;
 		echo '<select name="order" id="order">' . PHP_EOL;
 
-		$order_selected = array( 'ASC' => '', 'DESC' => '' );
-		if( $selected_order == 'ASC' ) { $order_selected['ASC'] = ' selected="selected"'; }
-		if( $selected_order == 'DESC' ) { $order_selected['DESC'] = ' selected="selected"'; }
-
-		echo '<option value="ASC"' . $order_selected['ASC'] . '>' . __( 'Ascending', 'gallery-view' ) . '</option>' . PHP_EOL;
-		echo '<option value="DESC"' . $order_selected['DESC'] . '>' . __( 'Descending', 'gallery-view' ) . '</option>' . PHP_EOL;
+		echo '<option value="ASC"' . selected( 'ASC', $selected_order, false ) . '>' . __( 'Ascending', 'gallery-view' ) . '</option>' . PHP_EOL;
+		echo '<option value="DESC"' . selected( 'DESC', $selected_order, false ) . '>' . __( 'Descending', 'gallery-view' ) . '</option>' . PHP_EOL;
 
 		echo '</select>' . PHP_EOL;
 
