@@ -40,7 +40,7 @@ You'll get a checkerboard pattern displayed instead of the image.
 == Changelog ==
 
 = 1.0 =
-* Release date: TBD
+* Release date: Jan 4, 2023
 * Initial release.
 
 == Upgrade Notice ==
