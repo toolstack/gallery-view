@@ -39,6 +39,11 @@ You'll get a checkerboard pattern displayed instead of the image.
 
 == Changelog ==
 
+= 1.1 =
+* Release date: TBD
+* Fixed incorrect page value used when submitting the filter form.
+* Added post_status to filter form so current view is maintained when adding a filter.
+
 = 1.0 =
 * Release date: Jan 4, 2023
 * Initial release.
