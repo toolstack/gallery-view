@@ -198,7 +198,12 @@ class Gallery_View
 
 		// Set some hidden values so the form submission works correctly.
 		echo '<input type="hidden" name="page" value="post_gallery">' . PHP_EOL;
-		echo '<input type="hidden" name="paged" value="1">' . PHP_EOL;
+		echo '<input type="hidden" name="paged" value="' . esc_attr( $current_page ) . '">' . PHP_EOL;
+
+		// If we're not on the all page, save the current view when we apply the filter.
+		if( $current_view != '' && $current_view != 'all' ) {
+			echo '<input type="hidden" name="post_status" value="' . esc_attr( $current_view ) . '">' . PHP_EOL;
+		}
 
 		echo '<div class="tablenav top">';
 		echo '<div class="alignleft actions">' . PHP_EOL;
