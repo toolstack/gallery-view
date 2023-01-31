@@ -3,7 +3,7 @@ Contributors: gregross
 Tags: admin, gallery, posts
 Requires at least: 4.6
 Tested up to: 6.1.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,7 +40,7 @@ You'll get a checkerboard pattern displayed instead of the image.
 == Changelog ==
 
 = 1.1 =
-* Release date: TBD
+* Release date: Jan 30, 2023
 * Fixed incorrect page value used when submitting the filter form.
 * Added post_status to filter form so current view is maintained when adding a filter.
 
