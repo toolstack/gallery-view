@@ -3,7 +3,7 @@
 **Tags:** admin, gallery, posts  
 **Requires at least:** 4.6  
 **Tested up to:** 6.1.1  
-**Stable tag:** 1.1  
+**Stable tag:** 1.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -40,6 +40,11 @@ You'll get a checkerboard pattern displayed instead of the image.
 
 
 ## Changelog ##
+
+### 1.2 ###
+* Release date: Feb 1, 2023
+* Added duplicate pagination controls to the bottom of the gallery view.
+* Fixed blank display if the current page was past the last available page.
 
 ### 1.1 ###
 * Release date: Jan 30, 2023
