@@ -132,10 +132,19 @@ class Gallery_View
 		// Use WP_Query to get the posts we want.
 		$results = new WP_Query( $posts_query );
 
+		// If for some reason we are on a page with no results, and it's not the first page, go back to the first page
+		// and rerun the query.  If we still don't have any results, well, that's just fine.
+		if( $results->found_posts == 0 && $current_page > 1 ) {
+			$posts_query['paged'] = 1;
+			$current_page = 1;
+
+			$results = new WP_Query( $posts_query );
+		}
+
 		// Use a nicer variable to hold the posts.
 		$posts = $results->posts;
 
-		// Set the number of results were actually found as the post count, instead of just what was returned in the current paged resuts.
+		// Set the number of results were actually found as the post count, instead of just what was returned in the current paged results.
 		$post_count = $results->found_posts;
 
 		// Time to start outputting some html.
@@ -163,10 +172,10 @@ class Gallery_View
 			if( $last_view == $view ) { $separator = ''; }
 
 			$view_selected = '';
-			if( $current_view == '' && $name == 'all' ) { $view_selected = ' current'; }
-			if( $current_view == $name ) { $view_selected = ' current'; }
+			if( $current_view == '' && $name == 'all' ) { $view_selected = 'current'; }
+			if( $current_view == $name ) { $view_selected = 'current'; }
 
-			echo '<li class="' . esc_attr( $name ) . '"><a class="' . esc_html( $view_selected ) . '" href="' . $this->build_admin_url( '', '', '', '', 1, $name ) . '">' . esc_html( $view ) . '<span class="count">(' . esc_html( $view_counts[$name] ). ')</span></a>' . $separator . '</li>' . PHP_EOL;
+			echo '<li class="' . esc_attr( $name ) . '"><a class="' . esc_html( $view_selected ) . '" href="' . $this->build_admin_url( $selected_date, $selected_cat_id, $selected_tag_id, $selected_order, $current_page, $name ) . '">' . esc_html( $view ) . '<span class="count">(' . esc_html( $view_counts[$name] ). ')</span></a>' . $separator . '</li>' . PHP_EOL;
 		}
 
 		echo '</ul>' . PHP_EOL;
@@ -348,8 +357,23 @@ class Gallery_View
 			echo '</div>' . PHP_EOL;
 		}
 
+		echo '<div class="clear"></div>' . PHP_EOL;
+
+		// Now output the page selector at the bottom of the list.
+		echo '<div class="tablenav bottom">';
+		echo '<div class="tablenav-pages">' . PHP_EOL;
+		echo '<span class="displaying-num">' . esc_html( $post_count ) . ' items</span>' . PHP_EOL;
+		echo '<span class="pagination-links">' . PHP_EOL;
+		echo $first_page . PHP_EOL;
+		echo $prev_page . PHP_EOL;
+		echo '<span class="paging-input"><label for="current-page-selector" class="screen-reader-text">Current Page</label><input class="current-page" id="current-page-selector" type="text" name="paged" value="' . $current_page . '" size="1" aria-describedby="table-paging"><span class="tablenav-paging-text"> of <span class="total-pages">' . $total_pages . '</span></span></span>' . PHP_EOL;
+		echo $next_page . PHP_EOL;
+		echo $last_page . PHP_EOL;
+		echo '</span>' . PHP_EOL;
+		echo '</div>' . PHP_EOL;
 		echo '</div>' . PHP_EOL;
 
+		echo '</div>' . PHP_EOL;
 	}
 
 	// This function creates an admin url to our page with the query tags added as required.
